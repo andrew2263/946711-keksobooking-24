@@ -2,7 +2,7 @@ const getRandomInt = (min, max) => {
   if (min >= 0 && max >= 0 && max >= min) {
     return Math.round(Math.random()*(max-min) + min);
   }
-  return 'Введите корректные значения';
+  throw new Error;
 };
 
 const getRandomFloat = (min, max, numberDecimals) => {
@@ -11,7 +11,7 @@ const getRandomFloat = (min, max, numberDecimals) => {
     const pow = Math.pow(10, numberDecimals);
     return Math.round(random * pow) / pow;
   }
-  return 'Введите корректные значения';
+  throw new Error;
 };
 
 getRandomInt(1, 47);
