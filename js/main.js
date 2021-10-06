@@ -53,11 +53,6 @@ const PHOTOS_LIST = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-const createAvatarValues = () => {
-  for (let it = 0; it < ARRAY_LENGTH; it++) {
-    avatarValues[it] = it + 1;
-  }
-};
 
 const createArray = () => {
   const getAvatarValue = () => {
