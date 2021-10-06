@@ -101,4 +101,4 @@ const createOffer = () => {
   };
 };
 
-const newArray = Array.from({length: ARRAY_LENGTH}, createArray);
+const offers = Array.from({length: ARRAY_LENGTH}, createArray);
