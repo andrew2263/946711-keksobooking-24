@@ -52,7 +52,6 @@ const PHOTOS_LIST = [
 ];
 
 const createOffer = () => {
-
   const getAvatarValue = () => {
     const value = getRandomInt(1, ARRAY_LENGTH);
     return (value < 10) ? `0${value}` : `${value}`;
@@ -96,3 +95,4 @@ const createOffer = () => {
 };
 
 const offers = Array.from({length: ARRAY_LENGTH}, createOffer);
+
