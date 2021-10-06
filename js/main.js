@@ -101,5 +101,4 @@ const createOffer = () => {
   };
 };
 
-createAvatarValues();
 const newArray = Array.from({length: ARRAY_LENGTH}, createArray);
