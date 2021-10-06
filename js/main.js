@@ -99,7 +99,6 @@ const createOffer = () => {
       lng: locationLng,
     },
   };
-  return obj;
 };
 
 createAvatarValues();
