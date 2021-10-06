@@ -54,7 +54,7 @@ const PHOTOS_LIST = [
 ];
 
 
-const createArray = () => {
+const createOffer = () => {
   const getAvatarValue = () => {
     const index = getRandomInt(0, avatarValues.length - 1);
     const value = avatarValues[index];
