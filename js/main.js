@@ -77,7 +77,7 @@ const createOffer = () => {
   const locationLat = getRandomFloat(35.65000, 35.70000, 5);
   const locationLng = getRandomFloat(139.70000, 139.80000, 5);
 
-  const obj = {
+  return {
     author: {
       avatar: `img/avatars/user${getAvatarValue()}.png`,
     },
