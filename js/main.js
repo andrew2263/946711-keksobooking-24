@@ -14,8 +14,6 @@ const getRandomFloat = (min, max, numberDecimals) => {
   throw new Error('Введите корректные значения');
 };
 
-const avatarValues = [];
-
 const ARRAY_LENGTH = 10;
 
 const OFFER_TYPE = [
@@ -53,36 +51,27 @@ const PHOTOS_LIST = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-const createAvatarValues = () => {
-  for (let it = 0; it < ARRAY_LENGTH; it++) {
-    avatarValues[it] = it + 1;
-  }
-};
+const createOffer = () => {
 
-const createArray = () => {
   const getAvatarValue = () => {
-    const index = getRandomInt(0, avatarValues.length - 1);
-    const value = avatarValues[index];
-    avatarValues.splice(index, 1);
+    const value = getRandomInt(1, ARRAY_LENGTH);
     return (value < 10) ? `0${value}` : `${value}`;
   };
 
-  const getRandomArray = (dataArray) => {
-    const arr = [];
-    const dataArrayCopy = dataArray.slice();
-    for (let it = 0; it < getRandomInt(1, dataArray.length); it++) {
-      const elemIndex = getRandomInt(0, dataArrayCopy.length -1);
-      const elem = dataArrayCopy[elemIndex];
-      arr.push(elem);
-      dataArrayCopy.splice(elemIndex, 1);
-    }
-    return arr;
+  const getShuffledItems = (items) => {
+    const itemsCopy = items.slice().sort(() => 0.5 - Math.random());
+    return itemsCopy;
+  };
+
+  const getRandomItems = (items) => {
+    const randomIndex = getRandomInt(0, items.length);
+    return getShuffledItems(items).slice(0, randomIndex);
   };
 
   const locationLat = getRandomFloat(35.65000, 35.70000, 5);
   const locationLng = getRandomFloat(139.70000, 139.80000, 5);
 
-  const obj = {
+  return {
     author: {
       avatar: `img/avatars/user${getAvatarValue()}.png`,
     },
@@ -95,17 +84,15 @@ const createArray = () => {
       guests: getRandomInt(1, 20),
       checkin: CHECKIN_TIME[getRandomInt(0, CHECKIN_TIME.length - 1)],
       checkout: CHECKOUT_TIME[getRandomInt(0, CHECKOUT_TIME.length - 1)],
-      features: getRandomArray(FEATURES_LIST),
+      features: getRandomItems(FEATURES_LIST),
       description: 'description',
-      photos: getRandomArray(PHOTOS_LIST),
+      photos: getRandomItems(PHOTOS_LIST),
     },
     location: {
       lat: locationLat,
       lng: locationLng,
     },
   };
-  return obj;
 };
 
-createAvatarValues();
-const newArray = Array.from({length: ARRAY_LENGTH}, createArray);
+const offers = Array.from({length: ARRAY_LENGTH}, createOffer);
