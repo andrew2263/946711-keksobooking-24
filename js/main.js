@@ -95,4 +95,3 @@ const createOffer = () => {
 };
 
 const offers = Array.from({length: ARRAY_LENGTH}, createOffer);
-
