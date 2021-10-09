@@ -1,6 +1,6 @@
-import {getRandomInt, getRandomFloat} from './util.js';
+import { getRandomInt, getRandomFloat } from './util.js';
 
-export const ARRAY_LENGTH = 10;
+const ARRAY_LENGTH = 10;
 
 const OFFER_TYPE = [
   'palace',
@@ -37,7 +37,7 @@ const PHOTOS_LIST = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-export const createOffer = () => {
+const createOffer = () => {
   const getAvatarValue = () => {
     const value = getRandomInt(1, ARRAY_LENGTH);
     return (value < 10) ? `0${value}` : `${value}`;
@@ -79,3 +79,5 @@ export const createOffer = () => {
     },
   };
 };
+
+export { ARRAY_LENGTH, createOffer };
