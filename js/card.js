@@ -31,10 +31,9 @@ const createList = (listItems, datalist, classNameTemplate) => {
   });
 };
 
-const cards = [];
-
-for (let i = 0; i < offers.length; i++) {
-  const card = cardPopup.cloneNode(true);
+const createPopupElement = (popup, offer) => {
+  const offerInfo = offer.offer;
+  const card = popup.cloneNode(true);
   const title = card.querySelector('.popup__title');
   const textAddress = card.querySelector('.popup__text--address');
   const textPrice = card.querySelector('.popup__text--price');
@@ -47,31 +46,29 @@ for (let i = 0; i < offers.length; i++) {
   let photo = card.querySelector('.popup__photo');
   const avatar = card.querySelector('.popup__avatar');
 
-  const offer = offers[i].offer;
+  fillElement(title, offerInfo.title);
+  fillElement(textAddress, offerInfo.address);
+  fillElement(textPrice, `${offerInfo.price} \u20bd/ночь`);
+  fillElement(type, TYPES[offerInfo.type]);
+  fillElement(textCapacity, `${offerInfo.rooms} комнаты для ${offerInfo.guests} гостей`);
+  fillElement(textTime, `Заезд после ${offerInfo.checkin}, выезд до ${offerInfo.checkout}`);
+  fillElement(description, offerInfo.description);
 
-  fillElement(title, offer.title);
-  fillElement(textAddress, offer.address);
-  fillElement(textPrice, `${offer.price} \u20bd/ночь`);
-  fillElement(type, TYPES[offer.type]);
-  fillElement(textCapacity, `${offer.rooms} комнаты для ${offer.guests} гостей`);
-  fillElement(textTime, `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`);
-  fillElement(description, offer.description);
+  createList(features, offerInfo.features, 'popup__feature--');
 
-  createList(features, offer.features, 'popup__feature--');
-
-  if (offer.photos.length === 0) {
+  if (offerInfo.photos.length === 0) {
     photo.classList.add('hidden');
   }
-  for (let j = 0; j < offer.photos.length; j++) {
+  for (let j = 0; j < offerInfo.photos.length; j++) {
     if (j !== 0) {
       photo = photos.children[j-1].cloneNode(true);
       photos.appendChild(photo);
     }
-    photo.src = offer.photos[j];
+    photo.src = offerInfo.photos[j];
   }
-  avatar.src = offers[i].author.avatar;
+  avatar.src = offer.author.avatar;
 
-  cards.push(card);
-}
+  return card;
+};
 
-mapCanvas.appendChild(cards[5]);
+mapCanvas.appendChild(createPopupElement(cardPopup, offers[0]));
