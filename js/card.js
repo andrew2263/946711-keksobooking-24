@@ -1,10 +1,3 @@
-import {createOffer, ARRAY_LENGTH} from './data.js';
-
-const offers = Array.from({length: ARRAY_LENGTH}, createOffer);
-const cardTemplate = document.querySelector('#card').content;
-const cardPopup = cardTemplate.querySelector('.popup');
-const mapCanvas = document.querySelector('#map-canvas');
-
 const TYPES = {
   'flat': 'Квартира',
   'bungalow': 'Бунгало',
@@ -59,16 +52,18 @@ const createPopupElement = (popup, offer) => {
   if (offerInfo.photos.length === 0) {
     photo.classList.add('hidden');
   }
-  for (let j = 0; j < offerInfo.photos.length; j++) {
+
+  offerInfo.photos.forEach((offerPhoto, j) => {
     if (j !== 0) {
       photo = photos.children[j-1].cloneNode(true);
       photos.appendChild(photo);
     }
-    photo.src = offerInfo.photos[j];
-  }
+    photo.src = offerPhoto;
+  });
+
   avatar.src = offer.author.avatar;
 
   return card;
 };
 
-mapCanvas.appendChild(createPopupElement(cardPopup, offers[0]));
+export { createPopupElement };
