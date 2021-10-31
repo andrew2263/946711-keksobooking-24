@@ -1,6 +1,7 @@
 import { createPopupElement } from './card.js';
 import { createOffer, ARRAY_LENGTH } from './data.js';
-import { toInactiveForm, toActiveForm } from './form.js';
+import { toggleFormState } from './form.js';
+import './form.js';
 
 const offers = Array.from({length: ARRAY_LENGTH}, createOffer);
 const cardTemplate = document.querySelector('#card').content;
@@ -11,6 +12,7 @@ const mapFilters = document.querySelector('.map__filters');
 
 mapCanvas.appendChild(createPopupElement(cardPopup, offers[0]));
 
-toInactiveForm(adForm, 'ad-form--disabled');
-toInactiveForm(mapFilters, 'map__filters--disabled');
-toActiveForm(mapFilters, 'map__filters--disabled');
+toggleFormState(adForm, 'ad-form--disabled');
+toggleFormState(adForm, 'ad-form--disabled');
+toggleFormState(mapFilters, 'map__filters--disabled');
+toggleFormState(mapFilters, 'map__filters--disabled');
