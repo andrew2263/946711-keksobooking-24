@@ -1,17 +1,90 @@
-const toInactiveForm = (form, inactiveClass) => {
-  form.classList.add(inactiveClass);
-  const elements = form.children;
-  for (let i = 0; i < elements.length; i++) {
-    elements[i].disabled = true;
+const adForm = document.querySelector('.ad-form');
+const adTitle = adForm.querySelector('#title');
+const adPrice = adForm.querySelector('#price');
+const adType = adForm.querySelector('#type');
+const adRoomNumber = adForm.querySelector('#room_number');
+const adCapacity = adForm.querySelector('#capacity');
+
+const toggleFormState = (form, inactiveClass) => {
+  form.classList.toggle(inactiveClass);
+  const elements = form.elements;
+  for (const element of elements) {
+    if (element.disabled) {
+      element.disabled = false;
+    } else {
+      element.disabled = true;
+    }
   }
 };
 
-const toActiveForm = (form, inactiveClass) => {
-  form.classList.remove(inactiveClass);
-  const elements = form.children;
-  for (let i = 0; i < elements.length; i++) {
-    elements[i].disabled = false;
+const setMinPrice = (type) => {
+  let minPrice = '0';
+  switch (type) {
+    case 'bungalow':
+      minPrice = '0';
+      break;
+    case 'flat':
+      minPrice = '1000';
+      break;
+    case 'hotel':
+      minPrice = '3000';
+      break;
+    case 'house':
+      minPrice = '5000';
+      break;
+    case 'palace':
+      minPrice = '10000';
+      break;
+    default:
+      minPrice = '0';
   }
+  return minPrice;
 };
 
-export { toInactiveForm, toActiveForm };
+const roomsToCapacities = {
+  1: [1],
+  2: [1, 2],
+  3: [1, 2, 3],
+  100: [0],
+};
+
+const onRoomsChange = () => {
+  const roomNumber = adRoomNumber.value;
+  const capacityNumber = Number(adCapacity.value);
+  adCapacity.setCustomValidity(roomsToCapacities[roomNumber].includes(capacityNumber) ? '' : 'Количество гостей больше, чем комнат');
+};
+
+adTitle.addEventListener('input', () => {
+  const minLength = Number(adTitle.attributes.minlength.value);
+  const maxLength = Number(adTitle.attributes.maxlength.value);
+  const valueLength = adTitle.value.length;
+
+  if (valueLength < minLength) {
+    adTitle.setCustomValidity(`Ещё ${ minLength - valueLength } символов`);
+  } else if (valueLength > maxLength) {
+    adTitle.setCustomValidity(`Удалите лишние ${ valueLength - maxLength } символов`);
+  } else {
+    adTitle.setCustomValidity('');
+  }
+});
+
+adType.addEventListener('input', () => {
+  adPrice.min = setMinPrice(adType.value);
+});
+
+adPrice.addEventListener('input', () => {
+  adPrice.min = setMinPrice(adType.value);
+  if (adPrice.value < Number(adPrice.min)) {
+    adPrice.setCustomValidity(`Минимальное значение: ${ adPrice.min }`);
+  } else if (adPrice.value > Number(adPrice.max)) {
+    adPrice.setCustomValidity(`Максимальное значение: ${ adPrice.max }`);
+  } else {
+    adPrice.setCustomValidity('');
+  }
+});
+
+adCapacity.addEventListener('input', () => {
+  onRoomsChange();
+});
+
+export { toggleFormState };
