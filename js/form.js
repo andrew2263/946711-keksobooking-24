@@ -4,6 +4,8 @@ const adPrice = adForm.querySelector('#price');
 const adType = adForm.querySelector('#type');
 const adRoomNumber = adForm.querySelector('#room_number');
 const adCapacity = adForm.querySelector('#capacity');
+const adTimein = adForm.querySelector('#timein');
+const adTimeout = adForm.querySelector('#timeout');
 
 const toggleFormState = (form, inactiveClass) => {
   form.classList.toggle(inactiveClass);
@@ -18,27 +20,20 @@ const toggleFormState = (form, inactiveClass) => {
 };
 
 const setMinPrice = (type) => {
-  let minPrice = '0';
   switch (type) {
     case 'bungalow':
-      minPrice = '0';
-      break;
+      return '0';
     case 'flat':
-      minPrice = '1000';
-      break;
+      return '1000';
     case 'hotel':
-      minPrice = '3000';
-      break;
+      return '3000';
     case 'house':
-      minPrice = '5000';
-      break;
+      return '5000';
     case 'palace':
-      minPrice = '10000';
-      break;
+      return '10000';
     default:
-      minPrice = '0';
+      return '0';
   }
-  return minPrice;
 };
 
 const roomsToCapacities = {
@@ -70,6 +65,7 @@ adTitle.addEventListener('input', () => {
 
 adType.addEventListener('input', () => {
   adPrice.min = setMinPrice(adType.value);
+  adPrice.placeholder = setMinPrice(adType.value);
 });
 
 adPrice.addEventListener('input', () => {
@@ -83,8 +79,14 @@ adPrice.addEventListener('input', () => {
   }
 });
 
-adCapacity.addEventListener('input', () => {
-  onRoomsChange();
+adTimein.addEventListener('input', () => {
+  adTimeout.value = adTimein.value;
 });
+
+adTimeout.addEventListener('input', () => {
+  adTimein.value = adTimeout.value;
+});
+
+adCapacity.addEventListener('input', onRoomsChange);
 
 export { toggleFormState };
