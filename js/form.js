@@ -20,27 +20,20 @@ const toggleFormState = (form, inactiveClass) => {
 };
 
 const setMinPrice = (type) => {
-  let minPrice = '0';
   switch (type) {
     case 'bungalow':
-      minPrice = '0';
-      break;
+      return '0';
     case 'flat':
-      minPrice = '1000';
-      break;
+      return '1000';
     case 'hotel':
-      minPrice = '3000';
-      break;
+      return '3000';
     case 'house':
-      minPrice = '5000';
-      break;
+      return '5000';
     case 'palace':
-      minPrice = '10000';
-      break;
+      return '10000';
     default:
-      minPrice = '0';
+      return '0';
   }
-  return minPrice;
 };
 
 const roomsToCapacities = {
@@ -94,8 +87,6 @@ adTimeout.addEventListener('input', () => {
   adTimein.value = adTimeout.value;
 });
 
-adCapacity.addEventListener('input', () => {
-  onRoomsChange();
-});
+adCapacity.addEventListener('input', onRoomsChange);
 
 export { toggleFormState };
