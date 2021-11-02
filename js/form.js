@@ -21,18 +21,24 @@ const toggleFormState = (form, inactiveClass) => {
 
 const setMinPrice = (type) => {
   switch (type) {
-    case 'bungalow':
+    case 'bungalow': {
       return '0';
-    case 'flat':
+    }
+    case 'flat': {
       return '1000';
-    case 'hotel':
+    }
+    case 'hotel': {
       return '3000';
-    case 'house':
+    }
+    case 'house': {
       return '5000';
-    case 'palace':
+    }
+    case 'palace': {
       return '10000';
-    default:
+    }
+    default: {
       return '0';
+    }
   }
 };
 
