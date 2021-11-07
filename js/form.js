@@ -1,3 +1,6 @@
+import { sendData } from './data.js';
+import { isEscapeKey } from './util.js';
+
 const adForm = document.querySelector('.ad-form');
 const adTitle = adForm.querySelector('#title');
 const adPrice = adForm.querySelector('#price');
@@ -6,6 +9,11 @@ const adRoomNumber = adForm.querySelector('#room_number');
 const adCapacity = adForm.querySelector('#capacity');
 const adTimein = adForm.querySelector('#timein');
 const adTimeout = adForm.querySelector('#timeout');
+const errorTemplate = document.querySelector('#error').content;
+const errorMessage = errorTemplate.querySelector('.error');
+const errorButton = errorMessage.querySelector('.error__button');
+const successTemplate = document.querySelector('#success').content;
+const successMessage = successTemplate.querySelector('.success');
 
 const toggleFormState = (form, inactiveClass) => {
   form.classList.toggle(inactiveClass);
@@ -95,4 +103,45 @@ adTimeout.addEventListener('input', () => {
 
 adCapacity.addEventListener('input', onRoomsChange);
 
-export { toggleFormState };
+const onMessageEscKeydown = (message) => (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeMessage(message);
+  }
+};
+
+function showMessage (message) {
+  document.body.append(message);
+  document.addEventListener('keydown', onMessageEscKeydown(message));
+}
+
+function closeMessage (message) {
+  message.remove();
+  document.removeEventListener('keydown', onMessageEscKeydown(message));
+}
+
+successMessage.addEventListener('click', () => {
+  successMessage.remove();
+});
+
+errorButton.addEventListener('click', () => {
+  errorMessage.remove();
+});
+
+errorMessage.addEventListener('click', () => {
+  errorMessage.remove();
+});
+
+const setAdFormSubmit = (onSuccess) => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      () => onSuccess(),
+      () => showMessage(errorMessage),
+      new FormData(evt.target),
+    );
+  });
+};
+
+export { toggleFormState, setAdFormSubmit, showMessage, successMessage };

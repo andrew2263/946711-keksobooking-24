@@ -14,4 +14,6 @@ const getRandomFloat = (min, max, numberDecimals) => {
   throw new Error('Введите корректные значения');
 };
 
-export { getRandomInt, getRandomFloat };
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export { getRandomInt, getRandomFloat, isEscapeKey };

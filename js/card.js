@@ -47,19 +47,29 @@ const createPopupElement = (popup, offer) => {
   fillElement(textTime, `Заезд после ${offerInfo.checkin}, выезд до ${offerInfo.checkout}`);
   fillElement(description, offerInfo.description);
 
-  createList(features, offerInfo.features, 'popup__feature--');
+  if (offerInfo.features) {
+    createList(features, offerInfo.features, 'popup__feature--');
+  }
 
-  if (offerInfo.photos.length === 0) {
+  if (!offerInfo.features) {
+    features.forEach((feature) => {
+      feature.remove();
+    });
+  }
+
+  if (!offerInfo.photos || offerInfo.photos.length === 0) {
     photo.classList.add('hidden');
   }
 
-  offerInfo.photos.forEach((offerPhoto, j) => {
-    if (j !== 0) {
-      photo = photos.children[j-1].cloneNode(true);
-      photos.appendChild(photo);
-    }
-    photo.src = offerPhoto;
-  });
+  if (offerInfo.photos) {
+    offerInfo.photos.forEach((offerPhoto, j) => {
+      if (j !== 0) {
+        photo = photos.children[j-1].cloneNode(true);
+        photos.appendChild(photo);
+      }
+      photo.src = offerPhoto;
+    });
+  }
 
   avatar.src = offer.author.avatar;
 
