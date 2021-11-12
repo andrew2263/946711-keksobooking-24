@@ -1,127 +1,97 @@
-const createOffer = (onSuccess, onError) => fetch(
-  'https://24.javascript.pages.academy/keksobooking/data',
-  {
-    method: 'GET',
-    credentials: 'same-origin',
-  },
-)
-  .then((response) => {
-    if(response.ok) {
-      return response.json();
-    }
+import { createPopupElement } from './card.js';
+import { createOfferMarker } from './map.js';
 
-    throw new Error(`${response.status} ${response.statusText}`);
-  })
-  .then((data) => {
-    onSuccess(data);
-  })
-  .catch((err) => {
-    onError(err);
+const OFFERS_COUNT = 10;
+const LOW_PRICE = 10000;
+const HIGH_PRICE = 50000;
+const cardTemplate = document.querySelector('#card').content;
+const cardPopup = cardTemplate.querySelector('.popup');
+const housingType = document.querySelector('#housing-type');
+const housingPrice = document.querySelector('#housing-price');
+const housingRooms = document.querySelector('#housing-rooms');
+const housingGuests = document.querySelector('#housing-guests');
+const housingFeatures = document.querySelector('#housing-features').querySelectorAll('input[type=checkbox]');
+
+const filterPrice = (value, price) => {
+  if (value === 'middle' && price >= LOW_PRICE && price <= HIGH_PRICE) {
+    return true;
+  }
+  if (value === 'low' && price < LOW_PRICE) {
+    return true;
+  }
+  if (value === 'high' && price > HIGH_PRICE) {
+    return true;
+  }
+  if (value === 'any') {
+    return true;
+  }
+  return false;
+};
+
+const setHousingType = (cb) => {
+  housingType.addEventListener('change', () => {
+    cb();
   });
+};
 
-const sendData = (onSuccess, onFail, body) => {
-  fetch(
-    'https://24.javascript.pages.academy/keksobooking',
-    {
-      method: 'POST',
-      body,
-    },
-  )
-    .then((response) => {
-      if(response.ok) {
-        onSuccess();
-      } else {
-        throw new Error('Не удалось отправить форму. Попробуйте ещё раз.');
-      }
-    })
-    .catch((err) => {
-      onFail(err);
+const setHousingPrice = (cb) => {
+  housingPrice.addEventListener('change', () => {
+    cb();
+  });
+};
+
+const setHousingRooms = (cb) => {
+  housingRooms.addEventListener('change', () => {
+    cb();
+  });
+};
+
+const setHousingGuests = (cb) => {
+  housingGuests.addEventListener('change', () => {
+    cb();
+  });
+};
+
+const setHousingFeatures = (cb) => {
+  for (const housingFeature of housingFeatures) {
+    housingFeature.addEventListener('change', () => {
+      cb();
+    });
+  }
+};
+
+const getOfferRank = (obj) => {
+  let rank = 0;
+  for (const housingFeature of housingFeatures) {
+    if (obj.offer.features && housingFeature.checked) {
+      obj.offer.features.forEach((feature) => {
+        if (feature === housingFeature.value) {
+          rank += 1;
+        }
+      });
+    }
+  }
+  return rank;
+};
+
+const compareOffers = (offerA, offerB) => {
+  const rankA = getOfferRank(offerA);
+  const rankB = getOfferRank(offerB);
+  return rankB - rankA;
+};
+
+const renderOffers = (offers, mapElement) => {
+  mapElement.clearLayers();
+  offers
+    .filter((obj) => obj.offer.type === housingType.value || housingType.value === 'any')
+    .filter((obj) => filterPrice(housingPrice.value, obj.offer.price))
+    .filter((obj) => obj.offer.rooms === Number(housingRooms.value) || housingRooms.value === 'any')
+    .filter((obj) => obj.offer.guests === Number(housingGuests.value) || housingGuests.value === 'any')
+    .sort(compareOffers)
+    .slice(0, OFFERS_COUNT)
+    .forEach((offer) => {
+      createOfferMarker(offer, mapElement, createPopupElement(cardPopup, offer));
     });
 };
 
-export { createOffer, sendData };
-/*
-import { getRandomInt, getRandomFloat } from './util.js';
-
-const ARRAY_LENGTH = 10;
-
-const OFFER_TYPE = [
-  'palace',
-  'flat',
-  'house',
-  'bungalow',
-  'hotel',
-];
-
-const CHECKIN_TIME = [
-  '12:00',
-  '13:00',
-  '14:00',
-];
-
-const CHECKOUT_TIME = [
-  '12:00',
-  '13:00',
-  '14:00',
-];
-
-const FEATURES_LIST = [
-  'wifi',
-  'dishwasher',
-  'parking',
-  'washer',
-  'elevator',
-  'conditioner',
-];
-
-const PHOTOS_LIST = [
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
-];
-
-const createOffer = () => {
-  const getAvatarValue = () => {
-    const value = getRandomInt(1, ARRAY_LENGTH);
-    return (value < 10) ? `0${value}` : `${value}`;
-  };
-
-  const getShuffledItems = (items) => {
-    const itemsCopy = items.slice().sort(() => 0.5 - Math.random());
-    return itemsCopy;
-  };
-
-  const getRandomItems = (items) => {
-    const randomIndex = getRandomInt(0, items.length);
-    return getShuffledItems(items).slice(0, randomIndex);
-  };
-
-  const locationLat = getRandomFloat(35.65000, 35.70000, 5);
-  const locationLng = getRandomFloat(139.70000, 139.80000, 5);
-
-  return {
-    author: {
-      avatar: `img/avatars/user${getAvatarValue()}.png`,
-    },
-    offer: {
-      title: 'Sample text',
-      address: `${locationLat}, ${locationLng}`,
-      price: getRandomInt(100, 1000000),
-      type: OFFER_TYPE[getRandomInt(0, OFFER_TYPE.length - 1)],
-      rooms: getRandomInt(1, 10),
-      guests: getRandomInt(1, 20),
-      checkin: CHECKIN_TIME[getRandomInt(0, CHECKIN_TIME.length - 1)],
-      checkout: CHECKOUT_TIME[getRandomInt(0, CHECKOUT_TIME.length - 1)],
-      features: getRandomItems(FEATURES_LIST),
-      description: 'description',
-      photos: getRandomItems(PHOTOS_LIST),
-    },
-    location: {
-      lat: locationLat,
-      lng: locationLng,
-    },
-  };
-};
-
-export { ARRAY_LENGTH, createOffer };
-*/
+export { renderOffers, setHousingType, setHousingPrice, setHousingRooms, setHousingGuests, setHousingFeatures };

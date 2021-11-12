@@ -36,7 +36,6 @@ const createPopupElement = (popup, offer) => {
   const features = card.querySelectorAll('.popup__feature');
   const description = card.querySelector('.popup__description');
   const photos = card.querySelector('.popup__photos');
-  let photo = card.querySelector('.popup__photo');
   const avatar = card.querySelector('.popup__avatar');
 
   fillElement(title, offerInfo.title);
@@ -58,16 +57,19 @@ const createPopupElement = (popup, offer) => {
   }
 
   if (!offerInfo.photos || offerInfo.photos.length === 0) {
-    photo.classList.add('hidden');
+    photos.classList.add('hidden');
   }
 
   if (offerInfo.photos) {
-    offerInfo.photos.forEach((offerPhoto, j) => {
-      if (j !== 0) {
-        photo = photos.children[j-1].cloneNode(true);
-        photos.appendChild(photo);
-      }
+    photos.innerHTML = '';
+    offerInfo.photos.forEach((offerPhoto) => {
+      const photo = document.createElement('img');
       photo.src = offerPhoto;
+      photo.classList.add('popup__photo');
+      photo.width = '45';
+      photo.height = '40';
+      photo.alt = 'Фотография жилья';
+      photos.appendChild(photo);
     });
   }
 
