@@ -2,21 +2,19 @@ import { createOffer } from './api.js';
 import { toggleFormState, setAdFormSubmit, showMessage, successMessage } from './form.js';
 import { marker } from './map.js';
 import { renderOffers, setHousingType, setHousingPrice, setHousingRooms, setHousingGuests, setHousingFeatures } from './data.js';
-import { debounce } from './utils/debounce.js';
-import './form.js';
+import { debounce } from './util.js';
 
 const adForm = document.querySelector('.ad-form');
 const resetButton = adForm.querySelector('.ad-form__reset');
 const adAddress = adForm.querySelector('#address');
 const mapFilters = document.querySelector('.map__filters');
+const map = L.map('map-canvas');
+const markerGroup = L.layerGroup().addTo(map);
 
 window.onload = () => {
   toggleFormState(adForm, 'ad-form--disabled');
   toggleFormState(mapFilters, 'map__filters--disabled');
 };
-
-const map = L.map('map-canvas');
-const markerGroup = L.layerGroup().addTo(map);
 
 const resetMap = () => {
   marker.setLatLng({
