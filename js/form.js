@@ -1,4 +1,4 @@
-import { sendData } from './data.js';
+import { sendData } from './api.js';
 import { isEscapeKey } from './util.js';
 
 const adForm = document.querySelector('.ad-form');
