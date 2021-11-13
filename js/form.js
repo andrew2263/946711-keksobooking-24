@@ -144,4 +144,4 @@ const setAdFormSubmit = (onSuccess) => {
   });
 };
 
-export { toggleFormState, setAdFormSubmit, showMessage, successMessage };
+export { adForm, toggleFormState, setAdFormSubmit, showMessage, successMessage };

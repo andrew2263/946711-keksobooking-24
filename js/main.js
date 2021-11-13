@@ -1,10 +1,10 @@
 import { createOffer } from './api.js';
-import { toggleFormState, setAdFormSubmit, showMessage, successMessage } from './form.js';
+import { adForm, toggleFormState, setAdFormSubmit, showMessage, successMessage } from './form.js';
 import { marker } from './map.js';
 import { renderOffers, setHousingType, setHousingPrice, setHousingRooms, setHousingGuests, setHousingFeatures } from './data.js';
 import { debounce } from './util.js';
+import './photo.js';
 
-const adForm = document.querySelector('.ad-form');
 const resetButton = adForm.querySelector('.ad-form__reset');
 const adAddress = adForm.querySelector('#address');
 const mapFilters = document.querySelector('.map__filters');
