@@ -2,18 +2,18 @@ import { sendData } from './api.js';
 import { isEscapeKey } from './util.js';
 
 const adForm = document.querySelector('.ad-form');
-const adTitle = adForm.querySelector('#title');
-const adPrice = adForm.querySelector('#price');
-const adType = adForm.querySelector('#type');
-const adRoomNumber = adForm.querySelector('#room_number');
-const adCapacity = adForm.querySelector('#capacity');
-const adTimein = adForm.querySelector('#timein');
-const adTimeout = adForm.querySelector('#timeout');
+const adTitleInput = adForm.querySelector('#title');
+const adPriceInput = adForm.querySelector('#price');
+const adTypeInput = adForm.querySelector('#type');
+const adRoomNumberInput = adForm.querySelector('#room_number');
+const adCapacityInput = adForm.querySelector('#capacity');
+const adTimeinInput = adForm.querySelector('#timein');
+const adTimeoutInput = adForm.querySelector('#timeout');
 const errorTemplate = document.querySelector('#error').content;
-const errorMessage = errorTemplate.querySelector('.error');
-const errorButton = errorMessage.querySelector('.error__button');
+const errorMessageElement = errorTemplate.querySelector('.error');
+const errorButton = errorMessageElement.querySelector('.error__button');
 const successTemplate = document.querySelector('#success').content;
-const successMessage = successTemplate.querySelector('.success');
+const successMessageElement = successTemplate.querySelector('.success');
 
 const toggleFormState = (form, inactiveClass) => {
   form.classList.toggle(inactiveClass);
@@ -58,50 +58,50 @@ const roomsToCapacities = {
 };
 
 const onRoomsChange = () => {
-  const roomNumber = adRoomNumber.value;
-  const capacityNumber = Number(adCapacity.value);
-  adCapacity.setCustomValidity(roomsToCapacities[roomNumber].includes(capacityNumber) ? '' : 'Количество гостей больше, чем комнат');
+  const roomNumber = adRoomNumberInput.value;
+  const capacityNumber = Number(adCapacityInput.value);
+  adCapacityInput.setCustomValidity(roomsToCapacities[roomNumber].includes(capacityNumber) ? '' : 'Количество гостей больше, чем комнат');
 };
 
-adTitle.addEventListener('input', () => {
-  const minLength = Number(adTitle.attributes.minlength.value);
-  const maxLength = Number(adTitle.attributes.maxlength.value);
-  const valueLength = adTitle.value.length;
+adTitleInput.addEventListener('input', () => {
+  const minLength = Number(adTitleInput.attributes.minlength.value);
+  const maxLength = Number(adTitleInput.attributes.maxlength.value);
+  const valueLength = adTitleInput.value.length;
 
   if (valueLength < minLength) {
-    adTitle.setCustomValidity(`Ещё ${ minLength - valueLength } символов`);
+    adTitleInput.setCustomValidity(`Ещё ${ minLength - valueLength } символов`);
   } else if (valueLength > maxLength) {
-    adTitle.setCustomValidity(`Удалите лишние ${ valueLength - maxLength } символов`);
+    adTitleInput.setCustomValidity(`Удалите лишние ${ valueLength - maxLength } символов`);
   } else {
-    adTitle.setCustomValidity('');
+    adTitleInput.setCustomValidity('');
   }
 });
 
-adType.addEventListener('input', () => {
-  adPrice.min = setMinPrice(adType.value);
-  adPrice.placeholder = setMinPrice(adType.value);
+adTypeInput.addEventListener('input', () => {
+  adPriceInput.min = setMinPrice(adTypeInput.value);
+  adPriceInput.placeholder = setMinPrice(adTypeInput.value);
 });
 
-adPrice.addEventListener('input', () => {
-  adPrice.min = setMinPrice(adType.value);
-  if (adPrice.value < Number(adPrice.min)) {
-    adPrice.setCustomValidity(`Минимальное значение: ${ adPrice.min }`);
-  } else if (adPrice.value > Number(adPrice.max)) {
-    adPrice.setCustomValidity(`Максимальное значение: ${ adPrice.max }`);
+adPriceInput.addEventListener('input', () => {
+  adPriceInput.min = setMinPrice(adTypeInput.value);
+  if (adPriceInput.value < Number(adPriceInput.min)) {
+    adPriceInput.setCustomValidity(`Минимальное значение: ${ adPriceInput.min }`);
+  } else if (adPriceInput.value > Number(adPriceInput.max)) {
+    adPriceInput.setCustomValidity(`Максимальное значение: ${ adPriceInput.max }`);
   } else {
-    adPrice.setCustomValidity('');
+    adPriceInput.setCustomValidity('');
   }
 });
 
-adTimein.addEventListener('input', () => {
-  adTimeout.value = adTimein.value;
+adTimeinInput.addEventListener('input', () => {
+  adTimeoutInput.value = adTimeinInput.value;
 });
 
-adTimeout.addEventListener('input', () => {
-  adTimein.value = adTimeout.value;
+adTimeoutInput.addEventListener('input', () => {
+  adTimeinInput.value = adTimeoutInput.value;
 });
 
-adCapacity.addEventListener('input', onRoomsChange);
+adCapacityInput.addEventListener('input', onRoomsChange);
 
 const onMessageEscKeydown = (message) => (evt) => {
   if (isEscapeKey(evt)) {
@@ -120,16 +120,16 @@ function closeMessage (message) {
   document.removeEventListener('keydown', onMessageEscKeydown(message));
 }
 
-successMessage.addEventListener('click', () => {
-  successMessage.remove();
+successMessageElement.addEventListener('click', () => {
+  successMessageElement.remove();
 });
 
 errorButton.addEventListener('click', () => {
-  errorMessage.remove();
+  errorMessageElement.remove();
 });
 
-errorMessage.addEventListener('click', () => {
-  errorMessage.remove();
+errorMessageElement.addEventListener('click', () => {
+  errorMessageElement.remove();
 });
 
 const setAdFormSubmit = (onSuccess) => {
@@ -138,10 +138,10 @@ const setAdFormSubmit = (onSuccess) => {
 
     sendData(
       () => onSuccess(),
-      () => showMessage(errorMessage),
+      () => showMessage(errorMessageElement),
       new FormData(evt.target),
     );
   });
 };
 
-export { adForm, toggleFormState, setAdFormSubmit, showMessage, successMessage };
+export { adForm, toggleFormState, setAdFormSubmit, showMessage, successMessageElement };

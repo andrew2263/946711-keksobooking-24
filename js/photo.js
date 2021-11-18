@@ -2,12 +2,12 @@ import { adForm } from './form.js';
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const avatarInput = adForm.querySelector('#avatar');
-const avatar = adForm.querySelector('.ad-form-header__preview').querySelector('img');
+const avatarImgElement = adForm.querySelector('.ad-form-header__preview').querySelector('img');
 const offerPhotoInput = adForm.querySelector('.ad-form__upload').querySelector('input[type=file]');
-const offerPhotoBlock = adForm.querySelector('.ad-form__photo');
-const offerPhoto = document.createElement('img');
-offerPhoto.width = '70';
-offerPhoto.height = '70';
+const offerPhotoElement = adForm.querySelector('.ad-form__photo');
+const offerPhotoImgElement = document.createElement('img');
+offerPhotoImgElement.width = 70;
+offerPhotoImgElement.height = 70;
 
 const addPhoto = (fileInput, photoElement) => {
   const file = fileInput.files[0];
@@ -21,15 +21,15 @@ const addPhoto = (fileInput, photoElement) => {
 };
 
 avatarInput.addEventListener('change', () => {
-  addPhoto(avatarInput, avatar);
+  addPhoto(avatarInput, avatarImgElement);
 });
 
 offerPhotoInput.addEventListener('change', () => {
-  addPhoto(offerPhotoInput, offerPhoto);
-  offerPhotoBlock.appendChild(offerPhoto);
+  addPhoto(offerPhotoInput, offerPhotoImgElement);
+  offerPhotoElement.appendChild(offerPhotoImgElement);
 });
 
 adForm.addEventListener('reset', () => {
-  avatar.src = '../img/muffin-grey.svg';
-  offerPhotoBlock.innerHTML = '';
+  avatarImgElement.src = '../img/muffin-grey.svg';
+  offerPhotoElement.innerHTML = '';
 });

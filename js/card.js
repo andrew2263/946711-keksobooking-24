@@ -27,24 +27,24 @@ const createList = (listItems, datalist, classNameTemplate) => {
 const createPopupElement = (popup, offer) => {
   const offerInfo = offer.offer;
   const card = popup.cloneNode(true);
-  const title = card.querySelector('.popup__title');
-  const textAddress = card.querySelector('.popup__text--address');
-  const textPrice = card.querySelector('.popup__text--price');
-  const type = card.querySelector('.popup__type');
-  const textCapacity = card.querySelector('.popup__text--capacity');
-  const textTime = card.querySelector('.popup__text--time');
+  const titleElement = card.querySelector('.popup__title');
+  const addressElement = card.querySelector('.popup__text--address');
+  const priceElement = card.querySelector('.popup__text--price');
+  const typeElement = card.querySelector('.popup__type');
+  const сapacityElement = card.querySelector('.popup__text--capacity');
+  const timeElement = card.querySelector('.popup__text--time');
   const features = card.querySelectorAll('.popup__feature');
-  const description = card.querySelector('.popup__description');
-  const photos = card.querySelector('.popup__photos');
-  const avatar = card.querySelector('.popup__avatar');
+  const descriptionElement = card.querySelector('.popup__description');
+  const photosElement = card.querySelector('.popup__photos');
+  const avatarElement = card.querySelector('.popup__avatar');
 
-  fillElement(title, offerInfo.title);
-  fillElement(textAddress, offerInfo.address);
-  fillElement(textPrice, `${offerInfo.price} \u20bd/ночь`);
-  fillElement(type, TYPES[offerInfo.type]);
-  fillElement(textCapacity, `${offerInfo.rooms} комнаты для ${offerInfo.guests} гостей`);
-  fillElement(textTime, `Заезд после ${offerInfo.checkin}, выезд до ${offerInfo.checkout}`);
-  fillElement(description, offerInfo.description);
+  fillElement(titleElement, offerInfo.title);
+  fillElement(addressElement, offerInfo.address);
+  fillElement(priceElement, `${offerInfo.price} \u20bd/ночь`);
+  fillElement(typeElement, TYPES[offerInfo.type]);
+  fillElement(сapacityElement, `${offerInfo.rooms} комнаты для ${offerInfo.guests} гостей`);
+  fillElement(timeElement, `Заезд после ${offerInfo.checkin}, выезд до ${offerInfo.checkout}`);
+  fillElement(descriptionElement, offerInfo.description);
 
   if (offerInfo.features) {
     createList(features, offerInfo.features, 'popup__feature--');
@@ -57,23 +57,23 @@ const createPopupElement = (popup, offer) => {
   }
 
   if (!offerInfo.photos || offerInfo.photos.length === 0) {
-    photos.classList.add('hidden');
+    photosElement.classList.add('hidden');
   }
 
   if (offerInfo.photos) {
-    photos.innerHTML = '';
+    photosElement.innerHTML = '';
     offerInfo.photos.forEach((offerPhoto) => {
-      const photo = document.createElement('img');
-      photo.src = offerPhoto;
-      photo.classList.add('popup__photo');
-      photo.width = '45';
-      photo.height = '40';
-      photo.alt = 'Фотография жилья';
-      photos.appendChild(photo);
+      const photoElement = document.createElement('img');
+      photoElement.src = offerPhoto;
+      photoElement.classList.add('popup__photo');
+      photoElement.width = '45';
+      photoElement.height = '40';
+      photoElement.alt = 'Фотография жилья';
+      photosElement.appendChild(photoElement);
     });
   }
 
-  avatar.src = offer.author.avatar;
+  avatarElement.src = offer.author.avatar;
 
   return card;
 };
